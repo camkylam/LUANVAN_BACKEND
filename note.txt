@@ -1,0 +1,31 @@
+Khi phát triển ứng dụng backend bằng Nodejs, Express và Mysql. Chúng ta sẽ cài một số gói npm như sau:
+    1. Express: Gói Express là một framework web phổ biến cho Node.js. Bạn có thể cài đặt nó bằng lệnh sau:
+        npm i express
+    2. MySQL: Để làm việc với cơ sở dữ liệu MySQL, bạn cần cài đặt gói mysql. Gói này cung cấp các phương thức để thực hiện các truy vấn và tương tác với cơ sở dữ liệu MySQL. Cài đặt như sau:
+        npm i mysql
+    3. Body-parser: Gói body-parser giúp bạn xử lý dữ liệu gửi đến từ phía client trong các yêu cầu HTTP như JSON, x-www-form-urlencoded. Cài đặt như sau:
+        npm i body-parser
+    4. Nodemon (khuyến nghị): Nodemon là một công cụ phát hiện sự thay đổi trong mã nguồn và tự động khởi động lại máy chủ khi có thay đổi. Điều này tiết kiệm thời gian trong quá trình phát triển bởi vì bạn không cần phải khởi động lại máy chủ thủ công mỗi lần thay đổi mã nguồn. Cài đặt như sau:
+        npm i nodemon --save-dev
+    5. Sequelize (khuyến nghị): Sequelize là một ORM (Object-Relational Mapping) cho Node.js, cho phép bạn tương tác với cơ sở dữ liệu SQL (bao gồm MySQL) thông qua đối tượng JavaScript. Cài đặt như sau:
+        npm i sequelize
+        npm i mysql2
+    6. Auto-install là một công cụ hoặc thư viện trong ngôn ngữ lập trình JavaScript để tự động cài đặt các phụ thuộc (dependencies) và gói (packages) cần thiết cho một dự án.
+        npm i auto-install
+    7. npm install log-symbols là một lệnh để cài đặt gói log-symbols từ kho lưu trữ npm vào dự án của bạn. Gói log-symbols cung cấp các biểu tượng (symbols) để thể hiện các trạng thái, thông báo hoặc lỗi trong ứng dụng của bạn.
+        npm i log-symbols
+    8. npm install conf là một lệnh để cài đặt gói conf từ kho lưu trữ npm vào dự án của bạn. Gói conf là một thư viện trong JavaScript để quản lý cấu hình (configuration) trong ứng dụng của bạn.
+        npm i conf
+    9. npm install --save listr là một lệnh để cài đặt gói listr từ kho lưu trữ npm vào dự án của bạn và đồng thời thêm nó vào danh sách các phụ thuộc trong tệp package.json.
+        npm i --save listr
+    10. log-update là một gói trong Node.js để cập nhật và làm mới nội dung được hiển thị trên dòng lệnh hoặc terminal/console.
+        npm i log-update
+    11. http-errors là một gói npm trong Node.js, cung cấp các đối tượng lỗi HTTP để xử lý và tạo ra các lỗi HTTP dễ dàng.
+        npm i http-errors
+    12. CORS (Cross-Origin Resource Sharing) là một cơ chế trong các trình duyệt web để cho phép các trang web hoặc ứng dụng web yêu cầu tài nguyên từ một nguồn gốc (origin) khác, có khác với nguồn gốc của trang web hiện tại. Nguyên tắc cơ bản của CORS là một trang web chỉ có thể yêu cầu tài nguyên từ cùng một nguồn gốc (origin) mặc định, và việc yêu cầu từ các nguồn gốc khác sẽ bị chặn vì lý do bảo mật.
+        npm i cors
+    13. morgan là một gói middleware trong Node.js được sử dụng để ghi lại nhật ký (log) các yêu cầu HTTP đến máy chủ web. Nó cung cấp một cách đơn giản để ghi lại thông tin về yêu cầu, ví dụ như địa chỉ IP, phương thức, URL, mã trạng thái và thời gian phản hồi.
+        npm i morgan
+    14. Kỹ thuật "encryption with decryption" bao gồm việc sử dụng một khóa (key) để mã hoá dữ liệu thành một định dạng mã hóa (cipher). Sau đó, khóa này được sử dụng để giải mã dữ liệu và hiển thị nó khi cần thiết. Kỹ thuật này thường được sử dụng cho việc mã hoá dữ liệu nhạy cảm và đảm bảo tính bảo mật. Module này là của nodejs
+
+    
