@@ -1,4 +1,4 @@
-/////
+
 const nodemailer = require("nodemailer");
 const path = require("path");
 
@@ -93,7 +93,7 @@ exports.sendEmailMutilFile = async (req, res, next) => {
 
     const info = await transporter.sendMail(mailOptions);
     return res.send({ error: false, msg: "Thành công" });
-    // res.json({ msg: "Thành công" });
+    
   } catch (error) {
     return res.json({ error: true, msg: error.message });
   }

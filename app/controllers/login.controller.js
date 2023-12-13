@@ -1,4 +1,4 @@
-// ! UNUSE API
+
 const { apiLogger } = require('../../logger')
 const { Account } = require('../models/index.model');
 const crypto = require('crypto');
@@ -21,11 +21,9 @@ exports.login = async (req, res) => {
   const { user_name, password } = req.body;
 
   try {
-    // Mã hóa thông tin đăng nhập
     const encryptedUserName = setEncrypt(user_name);
     const encryptedPassword = setEncrypt(password);
 
-    // Kiểm tra thông tin đăng nhập
     const account = await Account.findOne({
       where: {
         user_name: encryptedUserName,
@@ -39,7 +37,6 @@ exports.login = async (req, res) => {
       ],
     });
 
-    // console.log(account)
     apiLogger(req, res, 'Account ' + JSON.stringify(account))
 
     if (account) {

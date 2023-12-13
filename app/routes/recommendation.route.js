@@ -22,5 +22,7 @@ router.route("/recommendation/partymember/id")
 
 router.route("/recommendation/status/partycell/id")
   .post(recommendation.findAllByStatusWithPartycell);
+
+
   
 module.exports = router;

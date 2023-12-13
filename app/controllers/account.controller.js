@@ -46,7 +46,6 @@ exports.create = async (req, res, next) => {
         document,
       });
     } catch (error) {
-      // console.log(error.message);
       return res.send({
         error: true,
         msg: error.message,
@@ -121,7 +120,6 @@ exports.deleteOne = async (req, res, next) => {
       document: account,
     });
   } catch (error) {
-    // console.log(error);
     return next(createError(400, "Error deleting account"));
   }
 };
@@ -130,25 +128,19 @@ exports.deleteAll = async (req, res, next) => {
   try {
     const result = await Account.destroy({
       where: {},
-      truncate: true, // Truncate the table to remove all records
+      truncate: true, 
     });
 
     if (result === 0) {
-      // If no records were deleted, return an error
-      // return next(createError(404, 'No accounts found'));
-      return res.sendStatus(204); // Return 204 No Content if all records were deleted successfully
+      return res.sendStatus(204); 
     }
-
-    //   return res.sendStatus(204); // Return 204 No Content if all records were deleted successfully
   } catch (error) {
-    // console.log(error);
     return next(createError(400, "Error deleting accounts"));
   }
 };
 
 exports.update = async (req, res, next) => {
   const { PartyMemberId, roleId, password, user_name } = req.body;
-  // Kiểm tra xem dữ liệu cần thiết có bị thiếu không
   if (!user_name || !password || !roleId || !PartyMemberId) {
     return res.send({
       error: true,
@@ -269,7 +261,7 @@ exports.findEmailFromRole = async (req, res, next) => {
     const accounts = await Account.findAll({
       where: {
         user_name: { [Op.not]: encrypt('admin') },
-        roleId: roleId, // Filter based on roleId if provided
+        roleId: roleId, 
       },
       include: [
         {
@@ -329,14 +321,12 @@ exports.findEmailFromRoleAndHamlet = async (req, res, next) => {
 
 exports.findEmailFromRoleAndWard = async (req, res, next) => {
   try {
-    const { roleId, wardId } = req.body;
+    const { roleIdWard, wardId } = req.body;
 
     const whereCondition = {
       user_name: { [Op.not]: encrypt('admin') },
-      roleId: roleId,
+      roleId: roleIdWard,
     };
-
-    // Áp dụng điều kiện nếu wardId tồn tại
     if (wardId) {
       whereCondition['$PartyMember.Hamlet.Ward._id$'] = wardId;
     }
@@ -367,8 +357,6 @@ exports.findEmailFromRoleAndWard = async (req, res, next) => {
       ],
     });
 
-    // console.log(JSON.stringify(accounts, null, 2));
-
     const emails = accounts
       .map(account => account.PartyMember)
       .filter(partyMember => partyMember && partyMember.email)
@@ -384,12 +372,6 @@ exports.findEmailFromRoleAndWard = async (req, res, next) => {
     });
   }
 };
-
-
-
-
-
-
 
 exports.findEmailFromRoleAndPartyCell = async (req, res, next) => {
   try {

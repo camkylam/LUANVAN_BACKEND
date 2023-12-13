@@ -173,6 +173,7 @@ exports.findByPartymember = async (req, res, next) => {
       attributes: ['_id', 'createdAt'],
       include: [
         { model: PartyMember, as: 'SentBy', attributes: ['_id', 'name'] },
+        { model: PartyMember, as: 'BuildBy', attributes: ['_id', 'name'] },
         {
           model: Recommendation,
           attributes: { exclude: ['partymemberId', 'PartyMemberId', 'updatedAt'] },
@@ -291,6 +292,7 @@ exports.findById = async (req, res, next) => {
       attributes: ['_id', 'createdAt'],
       include: [
         { model: PartyMember, as: 'SentBy', attributes: ['_id', 'name'] },
+        { model: PartyMember, as: 'BuildBy', attributes: ['_id', 'name'] },
         {
           model: Recommendation,
           attributes: { exclude: ['partymemberId', 'PartyMemberId', 'updatedAt'] },
@@ -340,67 +342,6 @@ exports.findById = async (req, res, next) => {
 };
 
 
-// Tìm kiếm tất cả phiếu nhận xét theo id thư giới thiệu
-// exports.findAllOpinionsByRecommendation = async (req, res, next) => {
-//   const recommendationId = req.body.recommendationId;  // Assuming recommendationId is in the request body
-
-//   if (!recommendationId) {
-//     apiLogger(req, res, '400! Bad request!', 'error');
-//     return res.send({
-//       error: true,
-//       msg: 'Missing params'
-//     });
-//   }
-
-//   try {
-//     // Check if recommendation exists
-//     const recommendation = await Recommendation.findOne({
-//       where: { _id: recommendationId }
-//     });
-
-//     if (!recommendation) {
-//       apiLogger(req, res, '404! Recommendation not found!', 'error');
-//       return res.send({
-//         error: true,
-//         msg: `Không tìm được thư giới thiệu ${recommendationId}`
-//       });
-//     }
-
-//     // Find all opinions for the specified recommendation
-//     const opinions = await Opinion.findAll({
-//       where: { recommendationId: recommendationId },
-//       attributes: ['_id', 'createdAt'],
-//       include: [
-//         { model: PartyMember, as: 'SentBy', attributes: ['_id', 'name'] },
-//         {
-//           model: Recommendation,
-//           attributes: { exclude: ['partymemberId', 'PartyMemberId', 'updatedAt'] },
-//           include: [
-//             // Include other models as needed
-//           ]
-//         }
-//       ],
-//       order: [['createdAt', 'DESC']]
-//     });
-
-//     if (!opinions || opinions.length === 0) {
-//       apiLogger(req, res, `No opinions found for recommendation ${recommendationId}`, 'error');
-//       return res.send({
-//         error: true,
-//         msg: `Không tìm được phiếu nhận xét cho thư giới thiệu ${recommendationId}`
-//       });
-//     }
-
-//     apiLogger(req, res, `${opinions.length} results`);
-//     return res.send({
-//       error: false,
-//       document: opinions
-//     });
-//   } catch (error) {
-//     apiLogger(req, res, `${JSON.stringify(error)}`, 'error');
-//     return next(createError(400, `Error finding opinions for recommendation ${recommendationId}!`));
-//   }
-// };
 
 // Tìm kiếm tất cả phiếu nhận xét theo id thư giới thiệu
 exports.findAllOpinionsByRecommendation = async (req, res, next) => {

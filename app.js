@@ -1,10 +1,3 @@
-//socket
-/*const notification = require("./app/controllers/notification.controller");
-const {
-  Notification,
-  Event,
-  Customer_Event,
-} = require("./app/models/index.model");*/
 
 const createError = require("http-errors");
 const express = require("express");
@@ -12,8 +5,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 const bcrypt = require("bcryptjs");
-const moment = require("moment"); //socket
-const cron = require("node-cron"); //len lich
+const moment = require("moment"); 
+const cron = require("node-cron"); 
 const nodemailer = require("nodemailer"); //
 const { encrypt } = require("./app/config/crypto")
 const { logger } = require('./logger')
@@ -21,13 +14,13 @@ const { logger } = require('./logger')
 require('dotenv').config();
 const { Account, Role, PartyMember, Permission } = require("./app/models/index.model");
 
-// initialize
+
 const app = express();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-//socket
+
 const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server, {

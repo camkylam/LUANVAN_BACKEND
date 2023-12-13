@@ -173,49 +173,6 @@ exports.update = async (req, res, next) => {
   }
 };
 
-
-// exports.findHamletIdByName = async (req, res, next) => {
-//   try {
-//     const { HamletName, idCty, idWard, idDis } = req.body;
-//     const encryptedName = encrypt(HamletName);
-
-//     const hamlet = await Hamlet.findOne({
-//       where: {
-//         name: encryptedName,
-//         wardId: idWard,
-//       },
-//       include: [
-//         {
-//           model: Ward,
-//           attributes: [],
-//           where: {
-//             districtId: idDis,
-//           },
-//           include: [
-//             {
-//               model: District,
-//               attributes: [],
-//               where: {
-//                 ctyProvinceId: idCty,
-//               },
-//             },
-//           ],
-//         },
-//       ],
-//     });
-
-//     if (hamlet) {
-//       return res.send({ hamletId: hamlet._id });
-//     } else {
-//       return res.send({ hamletId: null, msg: `Hamlet with name '${HamletName}' not found for Cty with ID '${idCty}', Ward with ID '${idWard}', and District with ID '${idDis}'` });
-//     }
-//   } catch (error) {
-//     console.error('Error:', error.message);
-//     return res.status(500).json({ error: `Error finding Hamlet by name: ${error.message}` });
-//   }
-// };
-
-
 exports.findHamletIdByName = async (req, res, next) => {
   try {
     const { HamletName, DistrictName, WardName, CtyProvinceName } = req.body;

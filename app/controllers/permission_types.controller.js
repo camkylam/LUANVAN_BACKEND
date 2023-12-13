@@ -45,7 +45,7 @@ exports.findAll = async (req, res, next) => {
     });
     return res.status(200).json({
       msg:
-        documents.length > 0 ? "Danh sách khách hàng" : "Không có khách hàng",
+        documents.length > 0 ? "Danh sách loại quyền" : "Không có loại quyền",
       error: documents.length > 0 ? false : true,
       documents: documents.sort(
         (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
@@ -65,7 +65,7 @@ exports.findOne = async (req, res, next) => {
       },
     });
     return res.status(200).json({
-      msg: document ? "Chi tiết khách hàng" : "Khách hàng không tồn tại",
+      msg: document,
       error: document ? false : true,
       document,
     });

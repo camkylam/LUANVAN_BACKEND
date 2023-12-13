@@ -14,7 +14,6 @@ exports.create = async (req, res, next) => {
   }
 
   try {
-    // Check if exist criterion
     const criterion = await Criterion.findOne({
       where: { _id: criterionId }
     })

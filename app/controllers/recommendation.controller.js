@@ -55,28 +55,6 @@ exports.create = async (req, res, next) => {
         msg: `Không tìm được khu vực/ấp`
       })
     }
-
-    // Check if recommendation for same person same ward existed
-    // ? SHOULD I DELETE THIS CUZ WE HAVE ALOT OF RECOMMENDATION?
-    const recommendations = await Recommendation.findAll({
-      where: {
-        partymemberId: partymemberId,
-      },
-      include: [
-        {
-          model: Detailed_Recommendation,
-          where: { hamletId: hamletId }
-        }
-      ]
-    })
-    if (recommendations?.length > 0) {
-      apiLogger(req, res, `409! Existed recommendation. ${JSON.stringify(recommendations[0])}`, 'error')
-      return res.send({
-        error: true,
-        msg: `Đã tạo thư giới thiệu đảng viên ${partymember.name} đến chi bộ ${hamlet.name}`,
-      });
-    }
-
     // Add data
     // * State 1
     const newRecommendation = await Recommendation.create({
@@ -302,7 +280,7 @@ exports.findAllByStatus = async (req, res, next) => {
       include: [
         {
           model: PartyMember,
-          attributes: ['_id', 'name', 'gender', 'code', 'birthday', 'address', 'phone', 'dateJoin', 'dateOfficial', 'exemption'],
+          attributes: ['_id', 'name', 'email', 'gender', 'code', 'birthday', 'address', 'phone', 'dateJoin', 'dateOfficial', 'exemption'],
           include: [
             {
               model: PartyCell,
@@ -618,5 +596,9 @@ exports.findAllByStatusWithPartycell = async (req, res, next) => {
     });
   }
 };
+
+
+
+
 
 

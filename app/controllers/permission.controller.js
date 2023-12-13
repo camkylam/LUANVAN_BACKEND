@@ -116,31 +116,6 @@ exports.deleteAll = async (req, res, next) => {
   }
 };
 
-// exports.update = async (req, res, next) => {
-//   try {
-//     const { name } = req.body;
-//     const [updatedRowsCount, updatedRows] = await Permission.update(
-//       {
-//         name,
-//       },
-//       {
-//         where: {
-//           _id: req.params.id,
-//         },
-//         returning: true,
-//       }
-//     );
-
-//     if (updatedRowsCount === 0) {
-//       return next(createError(404, "Permission not found"));
-//     }
-
-//     return res.send(updatedRows[0]);
-//   } catch (error) {
-//     console.log(error);
-//     return next(createError(400, "Error updating Permission"));
-//   }
-// };
 exports.update = async (req, res, next) => {
   const { name } = req.body;
   // Kiểm tra xem dữ liệu cần thiết có bị thiếu không

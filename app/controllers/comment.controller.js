@@ -9,8 +9,6 @@ const { Op } = require('sequelize')
 
 exports.create = async (req, res, next) => {
   const { opinionId, commentedBy, evaluations, note } = req.body;
-  // evalutions = ['eval1', 'eval2', ..., 'eval7']
-  // note = 'Bla bla bla'
   if (!opinionId || !commentedBy || !evaluations) {
     apiLogger(req, res, '400! Bad request!', 'error')
     return res.send({
@@ -22,7 +20,6 @@ exports.create = async (req, res, next) => {
   let newCommentId = ''
   const t = await sequelize.transaction()
   try {
-    // Check if partymember existed
     const partymember = await PartyMember.findOne({
       where: {
         _id: commentedBy
@@ -36,8 +33,6 @@ exports.create = async (req, res, next) => {
         msg: `Không tìm được đảng viên`
       })
     }
-
-    // Check if opinion existed
     const opinion = await Opinion.findOne({
       where: { _id: opinionId },
       attributes: ['_id']
@@ -46,7 +41,7 @@ exports.create = async (req, res, next) => {
       apiLogger(req, res, '404! Opinion not found!', 'error')
       return res.send({
         error: true,
-        msg: `Không tìm được thư giới thiệu`
+        msg: `Không tìm được phiếu xin ý kiến`
       })
     }
 
@@ -59,7 +54,7 @@ exports.create = async (req, res, next) => {
       apiLogger(req, res, '404! Comment for opinion already existed', 'error')
       return res.send({
         error: true,
-        msg: `Đã tồn tại nhận xét cho thư xin ý kiến ${opinionId}`
+        msg: `Đã tồn tại nhận xét cho thư xin ý kiến`
       })
     }
 
@@ -662,9 +657,9 @@ return res.send({
 
 
 exports.findByYearAndPartyCellExemptionTrue = async (req, res, next) => {
-  const { year, partyCellIds } = req.body;
+  const { yeartrue, partyCellIds } = req.body;
 
-  if (!year || !partyCellIds || !Array.isArray(partyCellIds) || partyCellIds.length === 0) {
+  if (!yeartrue || !partyCellIds || !Array.isArray(partyCellIds) || partyCellIds.length === 0) {
     apiLogger(req, res, '400! Bad request!', 'error');
     return res.send({
       error: true,
@@ -675,7 +670,7 @@ exports.findByYearAndPartyCellExemptionTrue = async (req, res, next) => {
   try {
     const comments = await Comment.findAll({
       where: {
-        '$Comment.createdAt$': sequelize.where(sequelize.fn('year', sequelize.col('Comment.createdAt')), year),
+        '$Comment.createdAt$': sequelize.where(sequelize.fn('year', sequelize.col('Comment.createdAt')), yeartrue),
         '$Comment.signedBy$': { [Op.not]: null },
         '$Opinion.Recommendation.PartyMember.PartyCell._id$': { [Op.in]: partyCellIds },
         '$Opinion.Recommendation.PartyMember.exemption$': encrypt('true', 'exemption', {}),
@@ -727,10 +722,10 @@ exports.findByYearAndPartyCellExemptionTrue = async (req, res, next) => {
     });
 
     if (!comments || comments.length === 0) {
-      apiLogger(req, res, `Không có phiếu nhận xét cho năm ${year} và các chi bộ ${partyCellIds.join(', ')}`, 'error');
+      apiLogger(req, res, `Không có phiếu nhận xét cho năm ${yeartrue} và các chi bộ ${partyCellIds.join(', ')}`, 'error');
       return res.send({
         error: true,
-        msg: `Không tìm thấy phiếu nhận xét cho năm ${year} và các chi bộ ${partyCellIds.join(', ')}`
+        msg: `Không tìm thấy phiếu nhận xét cho năm ${yeartrue} và các chi bộ ${partyCellIds.join(', ')}`
       });
     }
     const criterionEvaluationCountsByCriterion = {};
@@ -783,9 +778,9 @@ exports.findByYearAndPartyCellExemptionTrue = async (req, res, next) => {
 
 
 exports.findByYearAndPartyCellExemptionFalse = async (req, res, next) => {
-  const { year, partyCellIds } = req.body;
+  const { yearfalse, partyCellIds } = req.body;
 
-  if (!year || !partyCellIds || !Array.isArray(partyCellIds) || partyCellIds.length === 0) {
+  if (!yearfalse || !partyCellIds || !Array.isArray(partyCellIds) || partyCellIds.length === 0) {
     apiLogger(req, res, '400! Bad request!', 'error');
     return res.send({
       error: true,
@@ -796,7 +791,7 @@ exports.findByYearAndPartyCellExemptionFalse = async (req, res, next) => {
   try {
     const comments = await Comment.findAll({
       where: {
-        '$Comment.createdAt$': sequelize.where(sequelize.fn('year', sequelize.col('Comment.createdAt')), year),
+        '$Comment.createdAt$': sequelize.where(sequelize.fn('year', sequelize.col('Comment.createdAt')), yearfalse),
         '$Comment.signedBy$': { [Op.not]: null },
         '$Opinion.Recommendation.PartyMember.PartyCell._id$': { [Op.in]: partyCellIds },
         '$Opinion.Recommendation.PartyMember.exemption$': false, // Thêm điều kiện này
@@ -848,10 +843,10 @@ exports.findByYearAndPartyCellExemptionFalse = async (req, res, next) => {
     });
 
     if (!comments || comments.length === 0) {
-      apiLogger(req, res, `Không có phiếu nhận xét cho năm ${year} và các chi bộ ${partyCellIds.join(', ')}`, 'error');
+      apiLogger(req, res, `Không có phiếu nhận xét cho năm ${yearfalse} và các chi bộ ${partyCellIds.join(', ')}`, 'error');
       return res.send({
         error: true,
-        msg: `Không tìm thấy phiếu nhận xét cho năm ${year} và các chi bộ ${partyCellIds.join(', ')}`
+        msg: `Không tìm thấy phiếu nhận xét cho năm ${yearfalse} và các chi bộ ${partyCellIds.join(', ')}`
       });
     }
 
@@ -881,9 +876,9 @@ return res.send({
 
 
 exports.findByYearAndPartyCellAndMeet = async (req, res, next) => {
-  const { year, partyCellIds } = req.body;
+  const { yearmeet, partyCellIds } = req.body;
 
-  if (!year || !partyCellIds || !Array.isArray(partyCellIds) || partyCellIds.length === 0) {
+  if (!yearmeet || !partyCellIds || !Array.isArray(partyCellIds) || partyCellIds.length === 0) {
     apiLogger(req, res, '400! Bad request!', 'error');
     return res.send({
       error: true,
@@ -894,7 +889,7 @@ exports.findByYearAndPartyCellAndMeet = async (req, res, next) => {
   try {
     const comments = await Comment.findAll({
       where: {
-        '$Comment.createdAt$': sequelize.where(sequelize.fn('year', sequelize.col('Comment.createdAt')), year),
+        '$Comment.createdAt$': sequelize.where(sequelize.fn('year', sequelize.col('Comment.createdAt')), yearmeet),
         '$Comment.signedBy$': { [Op.not]: null },
         '$Opinion.Recommendation.PartyMember.PartyCell._id$': { [Op.in]: partyCellIds },
         // '$Opinion.Recommendation.PartyMember.exemption$': false, // Thêm điều kiện này

@@ -27,7 +27,6 @@ exports.create = async (req, res, next) => {
         document: document,
       });
     } catch (error) {
-      // console.log(error);
       return res.send({
         error: true,
         msg: error.errors[0].message,
@@ -48,7 +47,6 @@ exports.findAll = async (req, res, next) => {
       documents.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     );
   } catch (error) {
-    // console.log(error);
     return next(createError(400, "Error findAll Cty_Province !"));
   }
 };

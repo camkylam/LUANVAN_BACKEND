@@ -17,7 +17,6 @@ const sequelize = new Sequelize(databaseName, databaseUser, databasePassword, {
   logging: false,
 });
 
-// connect to the database
 const connection = async () => {
   try {
     await sequelize.authenticate();
@@ -27,7 +26,6 @@ const connection = async () => {
   }
 };
 
-// auto create table
 const createTable = () => {
   try {
     sequelize.sync();

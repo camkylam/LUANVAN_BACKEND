@@ -13,7 +13,7 @@ exports.create = async (req, res, next) => {
     apiLogger(req, res, '400! Bad request!', 'error')
     return res.send({
       error: true,
-      msg: 'Missing params'
+      msg: 'Thiếu thông tin cần thiết'
     })
   }
 
@@ -21,6 +21,9 @@ exports.create = async (req, res, next) => {
     const partymembers = await PartyMember.findAll({
       where: {
         [Op.or]: [
+          {
+            code: encrypt(code)
+          },
           {
             phone: encrypt(phone)
           },
@@ -31,11 +34,12 @@ exports.create = async (req, res, next) => {
       }
     });
 
-    if (partymembers?.length > 0)
+    if (!partymembers || (partymembers && partymembers.length > 0)) {
       return res.send({
         error: true,
-        msg: `Số điện thoại và email đã được đăng ký trước đó.`,
+        msg: `Số điện thoại, email hoặc mã đảng viên đã được đăng ký trước đó.`,
       });
+    }
 
     const document = await PartyMember.create({
       name: name,
@@ -45,7 +49,7 @@ exports.create = async (req, res, next) => {
       email: email,
       gender: gender,
       dateJoin: dateJoin,
-      //dateOfficial: dateOfficial || undefined,
+      dateOfficial: dateOfficial !== undefined ? dateOfficial : null,
       code: code,
       positionId: positionId,
       partycellId: partycellId,
@@ -216,7 +220,7 @@ exports.deleteAll = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   // console.log(req.body);
-  const { name, birthday, address, phone, email, gender, dateJoin, dateOfficial, exemption } = req.body;
+  const { name, birthday, address, phone, email, code, gender, dateJoin, dateOfficial, exemption } = req.body;
   const positionId = req.body.Position?._id;
   const partycellId = req.body.PartyCell?._id;
   const hamletId = req.body.Hamlet?._id;
@@ -250,6 +254,7 @@ exports.update = async (req, res, next) => {
       existingMember.address === address &&
       existingMember.phone === phone &&
       existingMember.email === email &&
+      existingMember.code === code &&
       existingMember.dateJoin === dateJoin &&
       existingMember.dateOfficial === dateOfficial &&
       existingMember.postionId === positionId &&
@@ -271,6 +276,7 @@ exports.update = async (req, res, next) => {
         address: address,
         phone: phone,
         email: email,
+        code: code,
         gender: gender,
         dateJoin: dateJoin,
         dateOfficial: dateOfficial || undefined,
